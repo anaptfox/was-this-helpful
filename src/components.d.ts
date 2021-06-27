@@ -6,33 +6,18 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
-    }
     interface WasThisHelpful {
-        "feedbackPlaceholder": string;
-        "feedbackTitle": string;
-        "title": string;
+        "doneText": string;
+        "feedbackQuestion": string;
+        "feedbackStyle": string;
+        "happyFeedback": string;
+        "iconStyle": string;
+        "question": string;
+        "sadFeedback": string;
+        "session": string;
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
-    }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
-    };
     interface HTMLWasThisHelpfulElement extends Components.WasThisHelpful, HTMLStencilElement {
     }
     var HTMLWasThisHelpfulElement: {
@@ -40,33 +25,25 @@ declare global {
         new (): HTMLWasThisHelpfulElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
         "was-this-helpful": HTMLWasThisHelpfulElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-    }
     interface WasThisHelpful {
-        "feedbackPlaceholder"?: string;
-        "feedbackTitle"?: string;
-        "onOptionSelected"?: (event: CustomEvent<any>) => void;
-        "title"?: string;
+        "doneText"?: string;
+        "feedbackQuestion"?: string;
+        "feedbackStyle"?: string;
+        "happyFeedback"?: string;
+        "iconStyle"?: string;
+        "onAdditionalFeedback"?: (event: CustomEvent<any>) => void;
+        "onEverything"?: (event: CustomEvent<any>) => void;
+        "onFeedback"?: (event: CustomEvent<any>) => void;
+        "onResponse"?: (event: CustomEvent<any>) => void;
+        "question"?: string;
+        "sadFeedback"?: string;
+        "session"?: string;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
         "was-this-helpful": WasThisHelpful;
     }
 }
@@ -74,7 +51,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "was-this-helpful": LocalJSX.WasThisHelpful & JSXBase.HTMLAttributes<HTMLWasThisHelpfulElement>;
         }
     }

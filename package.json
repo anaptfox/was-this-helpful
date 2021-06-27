@@ -22,7 +22,9 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@stencil/core": "^2.0.1"
+    "@stencil/core": "^2.0.1",
+    "stencil-inline-svg": "^1.1.0",
+    "uuid": "^8.3.2"
   },
   "license": "MIT"
 }

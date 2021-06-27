@@ -1,84 +1,217 @@
-import { State, Event, Listen, EventEmitter, Prop, Component, h } from '@stencil/core';
+import { State, Event, EventEmitter, Prop, Component, Fragment, h } from '@stencil/core';
+import { ThumbsUp, ThumbsDown, EmojiHappy, EmojiSad } from './icons';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   tag: 'was-this-helpful',
   styleUrl: 'was-this-helpful.css',
-  assetsDirs: ['assets'],
   shadow: true,
 })
 export class WasThisHelpful {
-  @Event() optionSelected: EventEmitter<any>;
-  @State() submitted: boolean = false;
-  @Prop() title: string = 'Was this page helpful?';
-  @Prop() feedbackTitle: string = 'Any additional feedback?';
-  @Prop() feedbackPlaceholder: string = 'Any additional feedback?';
+  @Event() everything: EventEmitter<any>;
+  @Event() response: EventEmitter<any>;
+  @Event() feedback: EventEmitter<any>;
+  @Event() additionalFeedback: EventEmitter<any>;
 
-  handleOptionSubmit(e) {
-    e.preventDefault();
-    this.optionSelected.emit(e.submitter.value);
-    this.submitted = true;
+  // none: start -> done
+  // form: start -> form -> done
+  // options: start -> options -> done
+  // other: start -> options -> form -> done
+  @State() state: string = 'start';
+  @State() submittedResponse: string = null;
+  @State() optionRadioValue: string;
+  @State() formTextAreaValue: string;
+
+  @Prop() question: string = 'Was this helpful?';
+  @Prop() iconStyle: string = 'thumbs';
+  @Prop() doneText: string = '🎉 Thank you for your feedback!';
+  @Prop() feedbackQuestion: string = 'What is the reason for your feedback?';
+  @Prop() happyFeedback: string = 'Easy to understand, Solved my problem';
+  @Prop() sadFeedback: string = 'Hard to understand, Incorrect information or sample code, Missing the information/samples I need';
+  @Prop() feedbackStyle: string = 'none';
+  @Prop() session: string = uuidv4();
+
+  emitEvent(emitter: EventEmitter, event: any) {
+    emitter.emit(event);
+    this.everything.emit(event);
   }
 
-  handleFormSubmit(e) {
-    e.preventDefault();
-    console.log(e)
-    this.optionSelected.emit(e.submitter.value);
-    this.submitted = true;
+  buildEvent(eventName: string, eventData: any) {
+    return {
+      time: Date.now(),
+      session: this.session,
+      event: eventName,
+      data: eventData,
+      location: {
+        href: window.location.href,
+        path: window.location.pathname,
+        hostname: window.location.hostname,
+      },
+    };
   }
 
-  @Listen('optionSelected')
-  complete(event: CustomEvent) {
-    console.log('Feedback Submitted: ', event);
+  nextState(currentState: string) {
+    switch (currentState) {
+      case 'start':
+        if (this.feedbackStyle === 'none') {
+          return 'done';
+        } else if (this.feedbackStyle === 'form') {
+          return 'form';
+        } else if (this.feedbackStyle === 'options' || this.feedbackStyle === 'other') {
+          return 'options';
+        }
+      case 'form':
+        return 'done';
+      case 'options':
+        if (this.feedbackStyle === 'options') {
+          return 'done';
+        } else if (this.feedbackStyle === 'other' && this.optionRadioValue === "Other") {
+          return 'form';
+        } else {
+          return 'done';
+        }
+      case 'done':
+        return 'done';
+      default:
+        throw Error(`was-this-helpful: Looks like you got caught in a weird state ${currentState}.`);
+    }
   }
 
-  render() {
-    if (this.submitted) {
+  onSubmit(response: string) {
+    return (event: Event) => {
+      event.preventDefault();
+      this.emitEvent(this.response, this.buildEvent('submit', response));
+      this.state = this.nextState(this.state);
+      this.submittedResponse = response;
+    };
+  }
+
+  onOptions() {
+    return (event: Event) => {
+      event.preventDefault();
+      this.emitEvent(this.response, this.buildEvent('feedback', this.optionRadioValue));
+      this.state = this.nextState(this.state);
+    };
+  }
+
+  onAdditionalFeedback() {
+    return (event: Event) => {
+      event.preventDefault();
+      this.emitEvent(this.response, this.buildEvent('additional-feedback', this.formTextAreaValue));
+      this.state = this.nextState(this.state);
+    };
+  }
+
+  renderIcons(type) {
+    switch (type) {
+      case 'emoji':
+        return (
+          <div class="wth-option-container">
+            <button onClick={this.onSubmit('positive')} aria-label="Emoji Happy" name="option" value="emoji-happy" class="wth-option" innerHTML={EmojiHappy} />
+            <button onClick={this.onSubmit('negative')} aria-label="Emoji Sad" name="option" value="emoji-sad" class="wth-option" innerHTML={EmojiSad} />
+          </div>
+        );
+      case 'thumbs':
+        return (
+          <div class="wth-option-container">
+            <button onClick={this.onSubmit('positive')} aria-label="Thumbs Up" name="option" value="thumbs-up" class="wth-option" innerHTML={ThumbsUp} />
+            <button onClick={this.onSubmit('negative')} aria-label="Thumbs Down" name="option" value="thumbs-down" class="wth-option" innerHTML={ThumbsDown} />
+          </div>
+        );
+
+      default:
+        throw Error(`was-this-helpful: ${type} is not a valid value for the icon-style attribute.`);
+    }
+  }
+
+  handleTextAreaChange(event) {
+    this.formTextAreaValue = event.target.value;
+  }
+
+  handleOptionChange(words) {
+    return () => {
+      this.optionRadioValue = words;
+    };
+  }
+
+  renderOptions() {
+    if (!this.submittedResponse) throw Error(`was-this-helpful: A response wasn't trackd. `);
+
+    let feedbackOptions;
+    if (this.submittedResponse === 'positive') {
+      feedbackOptions = this.happyFeedback;
+    } else if (this.submittedResponse === 'negative') {
+      feedbackOptions = this.sadFeedback;
+    }
+
+    const options = feedbackOptions.split(',').map(sentence => {
       return (
-        <div class="was-this-helpful-container">
-          <form onSubmit={e => this.handleFormSubmit(e)} class="was-this-helpful-container">
-            <p class="was-this-helpful-title">{this.feedbackTitle}</p>
-            <textarea id="about" name="about" rows={3} class="was-this-helpful-feedback-textarea" placeholder="you@example.com"></textarea>
-            <div class="flex justify-end">
-              <button
-                type="submit" value="Submit"
-                class="bg-white py-2 mr-1 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Reset
-              </button>
-            </div>
-          </form>
+        <div class="wth-radio">
+          <input onChange={this.handleOptionChange(sentence)} id={sentence} name="feedback-form" type="radio" class="wth-radio-input" />
+          <label htmlFor={sentence} style={{ marginLeft: '.5rem' }}>
+            {sentence}
+          </label>
         </div>
+      );
+    });
+
+    if (this.feedbackStyle === 'other') {
+      options.push(
+        <div class="wth-radio">
+          <input onChange={this.handleOptionChange('Other')} required id="other-option" name="feedback-form" type="radio" class="wth-radio-input" />
+          <label htmlFor="other-option" style={{ marginLeft: '.5rem' }}>
+            Other
+          </label>
+        </div>,
       );
     }
 
-    return (
-      <div class="was-this-helpful-container">
-        <form onSubmit={e => this.handleOptionSubmit(e)}>
-          <h4 class="was-this-helpful-title">{this.title}</h4>
-          <div class="was-this-helpful-option-container">
-            <button name="option" value="thumbs-up" class="was-this-helpful-option">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                />
-              </svg>
+    return options;
+  }
+
+  renderForm(currentState: string) {
+    switch (currentState) {
+      case 'start':
+        return (
+          <Fragment>
+            <h5 class="wth-title">{this.question}</h5>
+            {this.renderIcons(this.iconStyle)}
+          </Fragment>
+        );
+      case 'done':
+        return <p id="wth-done-text">{this.doneText}</p>;
+      case 'form':
+        return (
+          <form onSubmit={this.onAdditionalFeedback()} class="wth-container">
+            <h4 class="wth-title">{this.feedbackQuestion}</h4>
+            <textarea onInput={e => this.handleTextAreaChange(e)} required id="feedback" name="feedback" rows={3} class="wth-feedback-textarea"></textarea>
+            <button style={{ width: '100%' }} type="submit" value="Submit" class="wth-button">
+              Submit
             </button>
-            <button name="option" value="thumbs-down" class="was-this-helpful-option">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"
-                />
-              </svg>
+          </form>
+        );
+      case 'options':
+        return (
+          <form onSubmit={this.onOptions()} class="wth-container">
+            <h4 style={{ marginBottom: '1rem' }} class="wth-title">
+              {this.feedbackQuestion}
+            </h4>
+
+            <fieldset class="wth-fieldset">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(1,minmax(0,1fr))', rowGap: '.5em' }}>{this.renderOptions()}</div>
+            </fieldset>
+
+            <button style={{ width: '100%' }} type="submit" value="Submit" class="wth-button">
+              Submit
             </button>
-          </div>
-        </form>
-      </div>
-    );
+          </form>
+        );
+      default:
+        throw Error(`was-this-helpful: Looks like you got caught in a weird state ${currentState}.`);
+    }
+  }
+
+  render() {
+    return <div class="was-this-helpful-container">{this.renderForm(this.state)}</div>;
   }
 }
