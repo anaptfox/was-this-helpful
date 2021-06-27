@@ -4,8 +4,6 @@
 
 `was-this-helpful` is a [Stencil.js](http://stenciljs.com) [web component](https://www.webcomponents.org/) that gives you a simple "Was this helpful?" form.  It also allows you [send the data any where you want]() ✨. 
 
-![Was%20This%20Helpful%206cf51781fdc0492bbef5cfe5d32323b2/Untitled.png](Was%20This%20Helpful%206cf51781fdc0492bbef5cfe5d32323b2/Untitled.png)
-
 ## Features
 
 - Easily ask a 👍 or 👎 question.
@@ -37,13 +35,10 @@
 
 The component fires the following events:
 
-`response` - when the user selects 👍 or 👎.
-
-`feedback` - when the user selects a feedback radio input.
-
-`additional-feedback` - when the users submits custom feedback text.
-
-`everything`- when any of the following events above are triggered.
+- `response` - when the user selects 👍 or 👎.
+- `feedback` - when the user selects a feedback radio input.
+- `additional-feedback` - when the users submits custom feedback text.
+- `everything`- when any of the following events above are triggered.
 
 Each event will be triggered separately. You can associate them with the `session` property.
 
@@ -79,32 +74,14 @@ Here is the format of the event data:
 </script>
 ```
 
-Examples:
-
-[Heap.io](https://www.notion.so/Heap-io-e266b5295886448e90e76a4bde6f7516)
-
-[Fetch](https://www.notion.so/Fetch-695f86d3f5a441f5b306c158e65e9ea6)
-
-[Google Analytics](https://www.notion.so/Google-Analytics-46e8304521c04d1c9b26a5dd7a1206f3)
-
 ## Feedback Styles
 
 The component can capture feedback in different ways. It can be controlled with an attribute called `feedback-style`.
 
 `none` (default) - This style is just the 👍 or 👎. That's it. 
-
 `options` (recommended) - After the user 👍 or 👎, they will be presented radio options for additional input.
-
-[image]
-
 `form` - After the user 👍 or 👎, they will be presented with a text area for additional input.
-
-![Was%20This%20Helpful%206cf51781fdc0492bbef5cfe5d32323b2/Untitled%201.png](Was%20This%20Helpful%206cf51781fdc0492bbef5cfe5d32323b2/Untitled%201.png)
-
 `other` - After the user 👍 or 👎, they will be presented radio options for additional input with an additional option "Other". If the user selects other, they will be presented with a text area to provide more information.
-
-[image]
-
 `options` is recommended because it's less work for the user and still provides you more "why" information. They can select 👍 or 👎, and option, and that's it. 
 
 ## Installation
@@ -155,35 +132,23 @@ After doing one of these,  you can use the element anywhere in your template, JS
 
 The component exposes the following options:
 
-`question` - `string` - change the name of the main question. 
-
-`icon-style` - `string` - change icon style. The icons are from [Heroicons](https://heroicons.com/). Here are the options:
-
-- `thumbs` (default)
-- `emoji`
-
-`feedback-style` - `string` - update the [Feedback Style](). Here are the options:
-
-- `none` (default)
-- `options`
-- `form`
-- `other`
-
-`feedback-question` - `string` - change the name of the feedback question.
-
-`done-text` - update the text the user sees when done giving feedback.
-
-`session` - label the user's session.
-
-`feedback-style` - change how the component gets feedback.  
-
-`happy-feedback` - if using `options` or `other`, you can provide a comma delineated list of options if the user submits *positive* feedback. 
-
-ex. `'Easy to understand, Solved my problem'`
-
-`sad-feedback` - if using `options` or `other`, you can provide a comma delineated list of options if the user submits *negative* feedback. 
-
-ex. `'Hard to understand, Incorrect information or sample code, Missing the information/samples I need'`
+- `question` - `string` - change the name of the main question. 
+- `icon-style` - `string` - change icon style. The icons are from [Heroicons](https://heroicons.com/). Here are the options:  
+  - `thumbs` (default)  
+  - `emoji`  
+- `feedback-style` - `string` - update the [Feedback Style](). Here are the options:  
+  - `none` (default)  
+  - `options`  
+  - `form`  
+  - `other`  
+- `feedback-question` - `string` - change the name of the feedback question.  
+- `done-text` - update the text the user sees when done giving feedback.  
+- `session` - label the user's session.  
+- `feedback-style` - change how the component gets feedback.    
+- `happy-feedback` - if using `options` or `other`, you can provide a comma delineated list of options if the user submits *positive* feedback.   
+    ex. `'Easy to understand, Solved my problem'`  
+- `sad-feedback` - if using `options` or `other`, you can provide a comma delineated list of options if the user submits *negative* feedback.   
+    ex. `'Hard to understand, Incorrect information or sample code, Missing the information/samples I need'`  
 
 Example:
 
@@ -200,9 +165,8 @@ Example:
 
 When styling the component, here are the following CSS Variables you can set:
 
-`--was-this-helpful-main-color` 
-
-`--was-this-helpful-font-family`
+- `--was-this-helpful-main-color` 
+- `--was-this-helpful-font-family`
 
 Example with Dark Mode 🕶️:
 
