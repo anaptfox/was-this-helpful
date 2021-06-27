@@ -18,7 +18,8 @@ export const config: Config = {
     },
     reactOutputTarget({
       componentCorePackage: 'was-this-helpful',
-      proxiesFile: '../was-this-helpful-react/src/components.ts'
+      proxiesFile: '../was-this-helpful-react/src/components.ts',
+      includeDefineCustomElements: true
     }),
   ],
   plugins: [inlineSvg()],
