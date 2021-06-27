@@ -15,7 +15,7 @@
 
 ```html
 <!-- Load the snippet. -->
-<script src='<script type="module"src='https://unpkg.com/was-this-helpful@0.0.1/dist/was-this-helpful/was-this-helpful.esm.js'></script>'></script>
+<script src='<script type="module"src='https://unpkg.com/was-this-helpful@0.0.2/dist/was-this-helpful/was-this-helpful.esm.js'></script>'></script>
 
 <!-- Place the component where you want it. -->
 <was-this-helpful></was-this-helpful>
@@ -95,7 +95,7 @@ There are three strategies for using this components:
 Place the following script tag  in the head of your `index.html`:
 
 ```html
-<script src='<script type="module"src='https://unpkg.com/was-this-helpful@0.0.1/dist/was-this-helpful/was-this-helpful.esm.js'></script>'></script>
+<script src='<script type="module"src='https://unpkg.com/was-this-helpful@0.0.2/dist/was-this-helpful/was-this-helpful.esm.js'></script>'></script>
 ```
 
 Then you can use the element anywhere in your template, JSX, html etc
