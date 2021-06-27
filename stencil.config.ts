@@ -7,6 +7,9 @@ export const config: Config = {
   namespace: 'was-this-helpful',
   outputTargets: [
     {
+      type: 'www'
+    },
+    {
       type: 'dist',
       esmLoaderPath: '../loader',
     },
