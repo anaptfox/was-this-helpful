@@ -1,5 +1,7 @@
 import { Config } from '@stencil/core';
 import { inlineSvg } from 'stencil-inline-svg';
+import { reactOutputTarget } from '@stencil/react-output-target';
+
 
 export const config: Config = {
   namespace: 'was-this-helpful',
@@ -14,10 +16,10 @@ export const config: Config = {
     {
       type: 'docs-readme',
     },
-    {
-      type: 'www',
-      serviceWorker: null, // disable service workers
-    },
+    reactOutputTarget({
+      componentCorePackage: 'was-this-helpful',
+      proxiesFile: '../was-this-helpful-react/src/components.ts'
+    }),
   ],
   plugins: [inlineSvg()],
 };

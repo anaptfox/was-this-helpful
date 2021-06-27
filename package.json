@@ -1,7 +1,11 @@
 {
   "name": "was-this-helpful",
   "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "description": "was-this-helpful is a Stencil.js web component that gives you a simple 'Was this helpful?' form.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ionic-team/ionic.git"
+  },
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -26,5 +30,8 @@
     "stencil-inline-svg": "^1.1.0",
     "uuid": "^8.3.2"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@stencil/react-output-target": "^0.0.9"
+  }
 }
