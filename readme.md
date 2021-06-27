@@ -2,7 +2,9 @@
 
 # Was This Helpful?
 
-`was-this-helpful` is a [Stencil.js](http://stenciljs.com) [web component](https://www.webcomponents.org/) that gives you a simple "Was this helpful?" form.  It also allows you [send the data any where you want]() ✨. 
+`was-this-helpful` is a [Stencil.js](http://stenciljs.com) [web component](https://www.webcomponents.org/) that gives you a simple "Was this helpful?" form.  It also allows you [send the data any where you want](#handling-events) ✨. 
+
+[See Demo](https://stackblitz.com/edit/was-this-helpful-example?devtoolsheight=33&file=index.html)
 
 ## Features
 
@@ -40,7 +42,7 @@ The component fires the following events:
 - `additional-feedback` - when the users submits custom feedback text.
 - `everything`- when any of the following events above are triggered.
 
-Each event will be triggered separately. You can associate them with the `session` property.
+Each event will be triggered separately. You can associate them with the [`session`](#api) property.
 
 ### Event Data
 
@@ -78,11 +80,11 @@ Here is the format of the event data:
 
 The component can capture feedback in different ways. It can be controlled with an attribute called `feedback-style`.
 
-- `none` (default) - This style is just the 👍 or 👎. That's it. 
-- `options` (recommended) - After the user 👍 or 👎, they will be presented radio options for additional input.
-- `form` - After the user 👍 or 👎, they will be presented with a text area for additional input.
-- `other` - After the user 👍 or 👎, they will be presented radio options for additional input with an additional option "Other". If the user selects other, they will be presented with a text area to provide more information.
-- `options` is recommended because it's less work for the user and still provides you more "why" information. They can select 👍 or 👎, and option, and that's it. 
+- `none` (default) - This style is just the response. That's it. 
+- `options` (recommended) - After the user response, they will be presented radio options for additional input.
+- `form` - After the user response, they will be presented with a text area for additional input.
+- `other` - After the user response, they will be presented radio options for additional input with an additional option "Other". If the user selects other, they will be presented with a text area to provide more information.
+- `options` is recommended because it's less work for the user and still provides you more "why" information. They can select response, and option, and that's it. 
 
 ## Installation
 
