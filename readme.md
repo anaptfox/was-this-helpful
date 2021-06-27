@@ -78,11 +78,11 @@ Here is the format of the event data:
 
 The component can capture feedback in different ways. It can be controlled with an attribute called `feedback-style`.
 
-`none` (default) - This style is just the 👍 or 👎. That's it. 
-`options` (recommended) - After the user 👍 or 👎, they will be presented radio options for additional input.
-`form` - After the user 👍 or 👎, they will be presented with a text area for additional input.
-`other` - After the user 👍 or 👎, they will be presented radio options for additional input with an additional option "Other". If the user selects other, they will be presented with a text area to provide more information.
-`options` is recommended because it's less work for the user and still provides you more "why" information. They can select 👍 or 👎, and option, and that's it. 
+- `none` (default) - This style is just the 👍 or 👎. That's it. 
+- `options` (recommended) - After the user 👍 or 👎, they will be presented radio options for additional input.
+- `form` - After the user 👍 or 👎, they will be presented with a text area for additional input.
+- `other` - After the user 👍 or 👎, they will be presented radio options for additional input with an additional option "Other". If the user selects other, they will be presented with a text area to provide more information.
+- `options` is recommended because it's less work for the user and still provides you more "why" information. They can select 👍 or 👎, and option, and that's it. 
 
 ## Installation
 
